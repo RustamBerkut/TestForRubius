@@ -2,17 +2,18 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 public class SequentialLoading : MonoBehaviour
 {
-    public RawImage rawImage;
+    public RawImage[] rawImage;
     private Texture2D _texture2D;
-    private void Start()
+
+    public void OnSequentialLoading()
     {
         StartCoroutine(OnDownloadImage("https://picsum.photos/200/300"));
     }
-
-    IEnumerator OnDownloadImage(string uri)
+    private IEnumerator OnDownloadImage(string uri)
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
         {
@@ -30,8 +31,13 @@ public class SequentialLoading : MonoBehaviour
                     break;
                 case UnityWebRequest.Result.Success:
                     Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
-                    _texture2D = DownloadHandlerTexture.GetContent(webRequest);
-                    rawImage.texture = _texture2D;
+
+                    foreach (var item in rawImage)
+                    {
+                        _texture2D = DownloadHandlerTexture.GetContent(webRequest);
+                        item.texture = _texture2D;
+                    }
+                    
                     break;
             }
         }
