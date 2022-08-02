@@ -15,6 +15,7 @@ public class SequentialLoading : MonoBehaviour
             Texture2D _texture2D = await OnDownloadImage("https://picsum.photos/200/300");
             item.texture = _texture2D;
         }
+        ShowImage();
     }
     private static async Task<Texture2D> OnDownloadImage(string url)
     {
@@ -39,5 +40,12 @@ public class SequentialLoading : MonoBehaviour
                 break;
         }
         return DownloadHandlerTexture.GetContent(webRequest);
+    }
+    private void ShowImage()
+    {
+        foreach (var item in rawImage)
+        {
+            item.CrossFadeColor(Color.blue, 2f, false, true);
+        }
     }
 }

@@ -13,6 +13,7 @@ public class ReadyLoading : MonoBehaviour
         {
             StartCoroutine(OnDownloadImage("https://picsum.photos/200/300", item));
         }
+        ShowImage();
     }
     private IEnumerator OnDownloadImage(string uri, RawImage item)
     {
@@ -35,6 +36,13 @@ public class ReadyLoading : MonoBehaviour
                 item.texture = _texture2D;
                 webRequest.Dispose();
                 break;
+        }
+    }
+    private void ShowImage()
+    {
+        foreach (var item in rawImage)
+        {
+            item.CrossFadeColor(Color.red, 2f, false, true);
         }
     }
 }

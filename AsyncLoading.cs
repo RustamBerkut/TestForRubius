@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System;
-
+using DG.Tweening;
 public class AsyncLoading : MonoBehaviour
 {
     public RawImage[] rawImage;
@@ -21,6 +21,7 @@ public class AsyncLoading : MonoBehaviour
         {
             rawImage[i].texture = texture2d[i];
         }
+        ShowImage();
     }
     private static async Task<Texture2D> OnDownloadImage(string url)
     {
@@ -45,5 +46,12 @@ public class AsyncLoading : MonoBehaviour
                 break;
         }
         return DownloadHandlerTexture.GetContent(webRequest);
+    }
+    private void ShowImage()
+    {
+        foreach (var item in rawImage)
+        {
+            item.CrossFadeColor(Color.green, 2f, false, true);
+        }
     }
 }
