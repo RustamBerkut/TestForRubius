@@ -8,24 +8,22 @@ using System;
 public class SequentialLoading : MonoBehaviour
 {
     public RawImage[] rawImage;
-
-    private Texture2D _texture2D;
     public async void OnSequentialDownloadImage()
     {
         foreach (var item in rawImage)
         {
-            _texture2D = await GetRemoteTexture("https://picsum.photos/200/300");
+            Texture2D _texture2D = await OnDownloadImage("https://picsum.photos/200/300");
             item.texture = _texture2D;
         }
     }
-    private static async Task<Texture2D> GetRemoteTexture(string url)
+    private static async Task<Texture2D> OnDownloadImage(string url)
     {
         using UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(url);
         var asyncOp = webRequest.SendWebRequest();
 
         while (asyncOp.isDone == false)
         {
-            await Task.Delay(1000);
+            await Task.Delay(1000); 
         }
         switch (webRequest.result)
         {

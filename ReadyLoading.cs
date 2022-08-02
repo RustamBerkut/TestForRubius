@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 public class ReadyLoading : MonoBehaviour
 {
     public RawImage[] rawImage;
-
-    private Texture2D _texture2D;
-    public void OnReadyLoading()
+    public void OnReadyDownloadImage()
     {
         foreach (var item in rawImage)
         {
@@ -18,7 +16,6 @@ public class ReadyLoading : MonoBehaviour
     }
     private IEnumerator OnDownloadImage(string uri, RawImage item)
     {
-
         using UnityWebRequest webRequest = UnityWebRequest.Get(uri);
         webRequest.downloadHandler = new DownloadHandlerTexture();
         yield return webRequest.SendWebRequest();
@@ -34,7 +31,7 @@ public class ReadyLoading : MonoBehaviour
                 break;
             case UnityWebRequest.Result.Success:
                 Debug.Log(":\nReceived: " + webRequest.downloadHandler.text);
-                _texture2D = DownloadHandlerTexture.GetContent(webRequest);
+                Texture2D _texture2D = DownloadHandlerTexture.GetContent(webRequest);
                 item.texture = _texture2D;
                 webRequest.Dispose();
                 break;
